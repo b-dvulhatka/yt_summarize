@@ -18,6 +18,9 @@ def summarize_text(text):
         max_tokens=200,
         top_p=1,
         frequency_penalty=0,
-        presence_penalty=0
+        presence_penalty=0,
+        stream=True
     )
-    return response['choices'][0]['message']['content'].strip()
+    for chunk in response:
+        if "choices" in chunk:
+            yield chunk["choices"][0]["delta"].get("content", "")

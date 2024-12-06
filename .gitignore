@@ -1,1 +1,4 @@
 .streamlit/secrets.toml
+desktop.ini
+__pycache__/youtube_audio.cpython-312.pyc
+__pycache__/openai_helper.cpython-312.pyc

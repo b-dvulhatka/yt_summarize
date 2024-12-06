@@ -10,32 +10,30 @@ st.set_page_config(page_title="YouTube Video Summarizer", page_icon="🎥")
 # Function to handle video analysis
 def analyze_video(youtube_url):
     """
-    Analyzes a YouTube video by downloading its audio, transcribing it, and summarizing the transcript.
+    Analyzes a YouTube video and streams the summary.
 
     Args:
         youtube_url (str): URL of the YouTube video.
 
-    Returns:
-        str: Summary of the video.
+    Yields:
+        str: Partial summary content as it's generated.
     """
     try:
         with st.spinner("Processando..."):
-            # Initialize OpenAI client
-
             # Download and process YouTube audio
             audio_file = download_youtube_audio(youtube_url)
             transcript = transcribe_audio(audio_file)
-            summary = summarize_text(transcript)
+
+            # Stream the summary
+            for chunk in summarize_text(transcript):
+                yield chunk
 
             # Clean up temporary audio file
             if os.path.exists(audio_file):
                 os.remove(audio_file)
 
-        return summary
-
     except Exception as e:
         st.error(f"Erro: {str(e)}")
-        return None
 
 # Sidebar login and OpenAI key input
 def sidebar():
